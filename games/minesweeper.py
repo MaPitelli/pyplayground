@@ -9,9 +9,13 @@ class Minesweeper(GameBase):
         super().__init__("Minesweeper")
         self.board_size = 5  # 5x5 board
         self.num_mines = 5  # Number of mines
-        self.board = [[' ' for _ in range(self.board_size)] for _ in range(self.board_size)]  # Empty board
+        self.reset_game()
+
+    def reset_game(self):
+        """Resets the game to its initial state."""
+        self.board = [[' ' for _ in range(self.board_size)] for _ in range(self.board_size)]
+        self.revealed = [[' ' for _ in range(self.board_size)] for _ in range(self.board_size)]
         self.mines = self.place_mines()
-        self.revealed = [[' ' for _ in range(self.board_size)] for _ in range(self.board_size)]  # Revealed board
         self.game_over = False
 
     def show_instructions(self):
@@ -25,35 +29,32 @@ class Minesweeper(GameBase):
         """Executes the main game logic."""
         while not self.game_over:
             self.display_board()
-            print("\nEnter row and column to reveal a space (1-5 for both):")
             row, col = self.get_player_move()
 
-            if self.revealed[row][col] != ' ':
-                print("This space has already been revealed.")
-                continue
-
-            if self.board[row][col] == 'X':  # 'X' represents a mine
-                self.revealed[row][col] = 'X'
-                self.display_board()
+            # Check if the player hit a mine
+            if self.board[row][col] == 'X':
+                self.display_board(reveal_all=True)  # Mostrar todas las minas
                 print("\nBoom! You hit a mine! Game over.")
                 self.game_over = True
             else:
                 self.reveal_square(row, col)
+
                 if self.check_win():
-                    self.display_board()
-                    print("\nCongratulations, you won the game!")
+                    self.display_board(reveal_all=True)  # Mostrar todas las minas
+                    print("\nCongratulations! You've cleared the board without hitting any mines!")
                     self.game_over = True
 
-            # Post-game options
-            choice = self.handle_post_game_options()
-            if choice == "replay":
-                self.__init__()  # Reset game
-                self.play()  # Start a new game
-            elif choice == "change":
-                break
-            elif choice == "quit":
-                print("\nThanks for playing! Goodbye!\n")
-                exit()
+        # Post-game options
+        choice = self.handle_post_game_options()
+        if choice == "replay":
+            self.reset_game() # Reset the game for replay
+            self.play()
+        elif choice == "change":
+            self.reset_game() # Reset the game for replay
+            return
+        elif choice == "quit":
+            print("\nThanks for playing! Goodbye!\n")
+            exit()
 
     def place_mines(self):
         """Randomly places mines on the board."""
@@ -61,19 +62,28 @@ class Minesweeper(GameBase):
         while len(mines) < self.num_mines:
             row = random.randint(0, self.board_size - 1)
             col = random.randint(0, self.board_size - 1)
-            mines.add((row, col))
+            if (row, col) not in mines:
+                mines.add((row, col))
+                self.board[row][col] = 'X'  # Place the mine on the board
         return mines
 
-    def display_board(self):
-        """Displays the current state of the revealed board."""
+    def display_board(self, reveal_all=False):
+        """
+        Displays the current state of the board.
+
+        :param reveal_all: If True, reveals all mines and the player's progress.
+        """
         print("\nCurrent board:")
-        for row in range(self.board_size):
-            for col in range(self.board_size):
-                if self.revealed[row][col] == ' ':
-                    print('■', end=' ')
+        for i in range(self.board_size):
+            row = []
+            for j in range(self.board_size):
+                if reveal_all:
+                    # Show mines and revealed cells
+                    row.append(self.board[i][j] if self.board[i][j] == 'X' else self.revealed[i][j])
                 else:
-                    print(self.revealed[row][col], end=' ')
-            print()
+                    # Show only revealed cells, hide unrevealed cells with '■'
+                    row.append(self.revealed[i][j] if self.revealed[i][j] != ' ' else '■')
+            print(" ".join(row))
 
     def get_player_move(self):
         """

@@ -1,6 +1,6 @@
-# 🎮 Python Games Playground
+# 🎮 Python Playground
 
-**Python Games Playground** is a project that brings together several classic games developed in Python, designed to showcase advanced programming skills, clean and structured code, object-oriented design, and best practices in software development. 
+**PyPlayground** is a project that brings together several classic games developed in Python, designed to showcase advanced programming skills, clean and structured code, object-oriented design, and best practices in software development. 
 
 ## 🚀 Games Included
 

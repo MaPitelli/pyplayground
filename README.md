@@ -1,5 +1,7 @@
 # 🎮 Python Playground
 
+![Python Playground](assets/banner.png)
+
 **PyPlayground** is a project that brings together several classic games developed in Python, designed to showcase advanced programming skills, clean and structured code, object-oriented design, and best practices in software development. 
 
 ## 🚀 Games Included
@@ -16,15 +18,16 @@ Each game is modular, well-documented, and designed to be easy to extend or impr
 ## 📂 Project Structure
 
 ```plaintext
+├── assets/                     # Folder for assets like images and media
+│   ├── banner.png              # Banner image for the README
 ├── games/                      # Main folder for all games
 │   ├── game_base.py            # Abstract base class for all games
 │   ├── rock_paper_scissors.py  # Rock, Paper, Scissors game logic
 │   ├── hangman.py              # Hangman game logic
 │   ├── tic_tac_toe.py          # Tic Tac Toe game logic
 │   ├── minesweeper.py          # Minesweeper game logic
-├── main.py                     # Entry point for the program
-├── requirements.txt            # (Optional) Dependencies file
-├── README.md                   # This file
+├── main.py                     # Entry point for running the program
+├── README.md                   # Project documentation
 ```
 
 
@@ -95,7 +98,7 @@ Boom! You hit a mine! Game over.
 
 ## 📚 Next Steps
 
-- [ ] Add new games such as **2048** or **Trivia**.
+- [ ] Add new games such as **2048**, **Memory Match** or **Trivia**.
 - [ ] Improve board designs for better visuals.
 - [ ] Create a graphical user interface (GUI) with Tkinter or Pygame.
 - [ ] Save high scores to a file or database.

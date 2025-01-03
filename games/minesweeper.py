@@ -30,6 +30,7 @@ class Minesweeper(GameBase):
         while not self.game_over:
             self.display_board()
             row, col = self.get_player_move()
+            self.clear_terminal()
 
             # Check if the player hit a mine
             if self.board[row][col] == 'X':
@@ -48,11 +49,14 @@ class Minesweeper(GameBase):
         choice = self.handle_post_game_options()
         if choice == "replay":
             self.reset_game() # Reset the game for replay
+            self.clear_terminal()
             self.play()
         elif choice == "change":
             self.reset_game() # Reset the game for replay
+            self.clear_terminal()
             return
         elif choice == "quit":
+            self.clear_terminal()
             print("\nThanks for playing! Goodbye!\n")
             exit()
 
@@ -96,17 +100,19 @@ class Minesweeper(GameBase):
                 move = input("Enter your move (row and column, separated by a space): ")
                 row, col = map(int, move.split())
                 if not (1 <= row <= self.board_size and 1 <= col <= self.board_size):
-                    raise ValueError(f"Row and column must be between 1 and {self.board_size}.")
+                    print(f"\nRow and column must be between 1 and {self.board_size}.")
+                    continue
                 row, col = row - 1, col - 1  # Convert to 0-based index
                 return row, col
-            except ValueError as e:
-                print(e)
+            except ValueError:
+                print(f"\nRow and column must be numbers between 1 and {self.board_size}.")
 
     def reveal_square(self, row, col):
         """Reveals a square and adjacent empty spaces if applicable."""
         # If the square is empty, count surrounding mines
         if self.revealed[row][col] != ' ':
-            return
+            print("\nThis position is already revealed. Choose another.")
+
 
         # Count adjacent mines
         adjacent_mines = self.count_adjacent_mines(row, col)

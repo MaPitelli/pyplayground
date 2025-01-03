@@ -23,11 +23,14 @@ class RockPaperScissors(GameBase):
             # Post-game options
             choice = self.handle_post_game_options()
             if choice == "replay":
-                print()
+                self.clear_terminal()
+                self.show_instructions()
                 continue
             elif choice == "change":
+                self.clear_terminal()
                 break
             elif choice == "quit":
+                self.clear_terminal()
                 print("\nThanks for playing! Goodbye!\n")
                 exit()
 

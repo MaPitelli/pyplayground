@@ -21,6 +21,7 @@ class TicTacToe(GameBase):
         while True:  # Loop to allow replaying or changing games
             self.board = [[" " for _ in range(3)] for _ in range(3)]  # Reset board
             mode = input("\nChoose mode: 1 for Player vs Player, 2 for Player vs Computer: ").strip()
+            self.clear_terminal()
             if mode not in {"1", "2"}:
                 print("Invalid mode. Please choose 1 or 2.")
                 continue
@@ -35,9 +36,12 @@ class TicTacToe(GameBase):
 
                 if player_vs_computer and current_player == "O":
                     row, col = self.computer_move()
-                    print(f"Computer chooses: {row + 1} {col + 1}")
+                    self.clear_terminal()
+                    # print(f"Computer chooses: {row + 1} {col + 1}")
+
                 else:
                     row, col = self.get_player_move()
+                    self.clear_terminal()
 
                 # Place the mark and update the board
                 self.board[row][col] = current_player
@@ -46,7 +50,12 @@ class TicTacToe(GameBase):
                 # Check for a win
                 if self.check_winner(current_player):
                     self.display_board()
-                    print(f"\nPlayer {current_player} wins! Congratulations!")
+                    if player_vs_computer and current_player == "X":
+                        print(f"\nPlayer {current_player} wins! Congratulations!")
+                    elif player_vs_computer and current_player == "O":
+                        print(f"\nComputer wins! Try again!")
+                    else:
+                        print(f"\nPlayer {current_player} wins! Congratulations!")
                     break
 
                 # Switch player
@@ -59,10 +68,13 @@ class TicTacToe(GameBase):
             # Post-game options
             choice = self.handle_post_game_options()
             if choice == "replay":
+                self.clear_terminal()
                 continue
             elif choice == "change":
+                self.clear_terminal()
                 break
             elif choice == "quit":
+                self.clear_terminal()
                 print("\nThanks for playing! Goodbye!\n")
                 exit()
 
@@ -85,13 +97,14 @@ class TicTacToe(GameBase):
                 move = input("Enter your move (row and column, separated by a space): ")
                 row, col = map(int, move.split())
                 if not (1 <= row <= 3 and 1 <= col <= 3):
-                    raise ValueError("Row and column must be between 1 and 3.")
+                    raise ValueError
                 row, col = row - 1, col - 1  # Convert to 0-based index
                 if self.board[row][col] != " ":
-                    raise ValueError("This position is already occupied. Choose another.")
+                    print("\nThis position is already occupied. Choose another.")
+                    continue
                 return row, col
-            except ValueError as e:
-                print(e)
+            except ValueError:
+                print("\nRow and column must be numbers between 1 and 3.")
 
     def computer_move(self):
         """

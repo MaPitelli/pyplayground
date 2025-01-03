@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import os
 
 class GameBase(ABC):
     """Abstract base class for all games. Defines the basic structure of a game."""
@@ -42,3 +43,7 @@ class GameBase(ABC):
                 return "quit"
             else:
                 print("\nInvalid choice. Please try again.")
+
+    def clear_terminal(self):
+        """Clears the terminal screen for better readability."""
+        os.system('cls' if os.name == 'nt' else 'clear')

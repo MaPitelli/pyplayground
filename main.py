@@ -27,6 +27,7 @@ def main():
         try:
             choice = int(input("Enter the number of the game you want to play: "))
             if choice in games:
+                games[choice].clear_terminal()
                 games[choice].show_instructions()
                 games[choice].play()
             elif choice == 5:

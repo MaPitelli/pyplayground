@@ -31,6 +31,7 @@ class Hangman(GameBase):
             while attempts_remaining > 0 and "_" in hidden_word:
                 print("\nGuessed letters:", " ".join(sorted(guessed_letters)))
                 guess = self.get_player_guess(guessed_letters)
+                self.clear_terminal()
 
                 if guess in word:
                     print(f"Good job! The letter '{guess}' is in the word.")
@@ -46,22 +47,25 @@ class Hangman(GameBase):
 
                 # Check if the word is fully guessed
                 if "_" not in hidden_word:
-                    print("\nCongratulations! You've guessed the word!")
-                    print(f"The word was: {word}")
+                    print("\nCongratulations! You've guessed the word!\n")
+                    print(f"The word was: {word.upper()}")
                     break
             else:
                 if "_" in hidden_word:
-                    print("\nGame over! You've run out of attempts.")
-                    print(f"The word was: {word}")
+                    print("\nGame over! You've run out of attempts.\n")
+                    print(f"The word was: {word.upper()}")
 
             # Post-game options
             choice = self.handle_post_game_options()
             if choice == "replay":
-                print()
+                self.clear_terminal()
+                self.show_instructions()
                 continue
             elif choice == "change":
+                self.clear_terminal()
                 break
             elif choice == "quit":
+                self.clear_terminal()
                 print("\nThanks for playing! Goodbye!\n")
                 exit()
 
